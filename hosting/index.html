@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Selesai - Ustd Fajri</title>
+    <!-- Memuat Tailwind CSS untuk styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS khusus untuk animasi teks berjalan (marquee) */
+        .marquee-wrapper {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+        }
+
+        .marquee-text {
+            display: inline-block;
+            /* Padding 100% mendorong teks ke ujung kanan di awal animasi */
+            padding-left: 100%;
+            /* Animasi bergerak linier secara terus-menerus */
+            animation: scroll-left 15s linear infinite;
+        }
+
+        /* Keyframes untuk pergerakan dari kanan ke kiri penuh */
+        @keyframes scroll-left {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-100%, 0);
+            }
+        }
+
+        /* Tambahan CSS untuk lingkaran animasi */
+        .circle-container {
+            width: 100%;
+            position: relative;
+            height: 500px; /* Ruang dimaksimalkan ke 500px agar layout tidak naik-turun */
+            margin-bottom: 0; /* Menghilangkan jarak agar menyentuh banner */
+        }
+
+        .animated-circle {
+            position: absolute;
+            bottom: 0; /* Memastikan bola selalu menyentuh banner biru di bawahnya */
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            /* Variabel batas kanan untuk referensi animasi */
+            --ball-size: 100px; 
+            /* Animasi gerakan, hilang, dan warna pelangi */
+            animation: moveRightReset 4s linear infinite, change-color 5s linear infinite;
+        }
+
+        @keyframes moveRightReset {
+            0% {
+                left: 0;
+                opacity: 1; /* Muncul di awal */
+            }
+            85% {
+                left: calc(100% - var(--ball-size)); /* Mentok di kanan disesuaikan ukuran bola */
+                opacity: 1;
+            }
+            90% {
+                left: calc(100% - var(--ball-size));
+                opacity: 0; /* Bola menghilang di ujung kanan */
+            }
+            95% {
+                left: 0; /* Pindah kembali ke ujung kiri dengan cepat */
+                opacity: 0; /* Tetap tersembunyi selama berpindah */
+            }
+            100% {
+                left: 0;
+                opacity: 1; /* Muncul lagi untuk mengulang animasi */
+            }
+        }
+
+        @keyframes change-color {
+            0% { background-color: #ff0000; } /* Merah */
+            16.6% { background-color: #ffff00; } /* Kuning */
+            33.3% { background-color: #00ff00; } /* Hijau */
+            50% { background-color: #00ffff; } /* Cyan */
+            66.6% { background-color: #0000ff; } /* Biru */
+            83.3% { background-color: #ff00ff; } /* Magenta */
+            100% { background-color: #ff0000; } /* Kembali ke Merah */
+        }
+    </style>
+</head>
+<body class="bg-[#041E2D] min-h-screen flex flex-col items-center justify-center m-0 p-0 font-sans overflow-hidden">
+
+    <!-- Container Lingkaran Bergerak -->
+    <div class="circle-container">
+        <div class="animated-circle"></div>
+    </div>
+
+    <!-- Container Banner Utama (Full width 100%) -->
+    <div class="w-full bg-[#36B3EB] py-3 px-4 flex items-center shadow-lg">
+        
+        <!-- Bagian Teks Berjalan -->
+        <div class="marquee-wrapper flex-1">
+            <span class="marquee-text font-bold text-black text-xl tracking-wide uppercase">
+                asaalamualaikum ustd fajri tugas saya udah selesai
+            </span>
+        </div>
+
+        <!-- Teks by. daus di sebelah kanan -->
+        <div class="ml-4 flex-shrink-0 bg-black/20 px-4 py-2 rounded-full text-white text-sm font-medium shadow-sm">
+            by. daus
+        </div>
+
+    </div>
+
+    <script>
+        const ball = document.querySelector('.animated-circle');
+        let currentSize = 100;
+
+        // Event listener ini memicu setiap kali bola selesai satu putaran berjalan
+        ball.addEventListener('animationiteration', (e) => {
+            // Hanya tangkap animasi pergerakan (hindari event dari animasi change-color)
+            if (e.animationName === 'moveRightReset') {
+                currentSize += 100; // Tambah ukuran 100px setiap kali muncul
+                
+                // Jika sudah melewati batas maksimal 500px, kembalikan ke ukuran dasar 100px
+                if (currentSize > 500) {
+                    currentSize = 100;
+                }
+
+                // Terapkan gaya ukuran baru
+                ball.style.width = currentSize + 'px';
+                ball.style.height = currentSize + 'px';
+                // Terapkan variabel supaya mentok kanannya tetap pas sesuai ukurannya
+                ball.style.setProperty('--ball-size', currentSize + 'px');
+            }
+        });
+    </script>
+</body>
+</html>
